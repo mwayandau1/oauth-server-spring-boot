@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" type="image/x-icon" href="/images/logo.png" />
+
+    <script defer src="/js/consent.js"></script>
+    <title>HealthZip | Authorization</title>
+</head>
+<body>
+<main class="auth-section">
+    <div class="bg-overlay"></div>
+    <div class="content-container">
+        <header class="auth-header">
+            <h1>Authorization Required</h1>
+            <p>
+                A third-party application is requesting access to your HealthZip account.
+                Please review the permissions below.
+            </p>
+        </header>
+        <footer class="auth-footer">
+            <h2>Secure Authorization</h2>
+            <p>
+                You can revoke access at any time from your account settings.
+                Your data remains protected and secure.
+            </p>
+        </footer>
+    </div>
+    <div class="form-container">
+        <img src="/images/logo.png" alt="Health Zip Logo" class="auth-logo" />
+
+        <div class="form-content">
+            <h3>Authorize Application</h3>
+            <p>
+                Hello <strong th:text="${principal}"></strong>,<br/>
+                Application <strong th:text="${clientId}"></strong> is requesting access to your account.
+            </p>
+
+            <div class="permissions-section" style="margin: 1.5rem 0;">
+                <h4>Requested Permissions:</h4>
+                <div class="permissions-list" style="margin: 1rem 0;">
+                    <div th:each="scope : ${requestedScopes}" class="permission-item"
+                         style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                        <input type="checkbox" th:id="'scope-' + ${scope}" th:value="${scope}"
+                               checked="checked" disabled="disabled"
+                               style="margin-right: 0.5rem;" />
+                        <label th:for="'scope-' + ${scope}" th:text="${scope}"
+                               style="text-transform: capitalize;"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="consent-actions" style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <form th:action="@{/oauth2/authorize}" method="post" style="flex: 1;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <input type="hidden" name="client_id" th:value="${clientId}" />
+                    <input type="hidden" name="state" th:value="${state}" />
+                    <input type="hidden" name="redirect_uri" th:value="${redirectUri}" />
+
+                    <!-- Include all requested scopes -->
+                    <div th:each="scope : ${requestedScopes}">
+                        <input type="hidden" name="scope" th:value="${scope}" />
+                    </div>
+
+                    <button type="submit" name="consent" value="approve"
+                            class="submit-btn" style="width: 100%; background-color: #28a745;">
+                        Authorize
+                    </button>
+                </form>
+
+                <form th:action="@{/oauth2/authorize}" method="post" style="flex: 1;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <input type="hidden" name="client_id" th:value="${clientId}" />
+                    <input type="hidden" name="state" th:value="${state}" />
+                    <input type="hidden" name="redirect_uri" th:value="${redirectUri}" />
+
+                    <button type="submit" name="consent" value="deny"
+                            class="submit-btn" style="width: 100%; background-color: #dc3545;">
+                        Deny
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

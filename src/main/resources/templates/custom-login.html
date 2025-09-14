@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" type="image/x-icon" href="/images/logo.png" />
+
+    <script defer src="/js/auth.js"></script>
+    <title>HealthZip | Login</title>
+</head>
+<body>
+<main class="auth-section">
+    <div class="bg-overlay"></div>
+    <div class="content-container">
+        <header class="auth-header">
+            <h1>Welcome to HealthZip</h1>
+            <p>
+                Access your healthcare information securely and connect with your
+                providers and patients
+            </p>
+        </header>
+        <footer class="auth-footer">
+            <h2>Secure Access</h2>
+            <p>
+                Your health information is protected with industry-leading security
+                standards and HIPAA compliance.
+            </p>
+        </footer>
+    </div>
+    <div class="form-container">
+        <img src="/images/logo.png" alt="Health Zip Logo" class="auth-logo" />
+
+        <form class="form-content" th:action="@{/login}" method="post" id="login-form">
+
+
+            <div th:if="${errorMessage}" class="error-message" style="color: #dc3545; margin-bottom: 1rem; padding: 0.75rem; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 0.375rem;">
+                <span th:text="${errorMessage}"></span>
+            </div>
+
+            <div th:if="${logoutMessage}" class="success-message" style="color: #155724; margin-bottom: 1rem; padding: 0.75rem; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 0.375rem;">
+                <span th:text="${logoutMessage}"></span>
+            </div>
+
+            <h3>Enter your details to sign in</h3>
+
+            <div class="input-field">
+                <p>Email</p>
+                <input
+                        type="email"
+                        placeholder="name@example.com"
+                        name="username"
+                        id="username"
+                        required
+                        autocomplete="email"
+                />
+                <img src="/images/email.svg" alt="email-icon" data-for="email" />
+            </div>
+
+            <div class="input-field">
+                <p>Password</p>
+                <input
+                        type="password"
+                        placeholder="**********************"
+                        name="password"
+                        id="password-field"
+                        required
+                        autocomplete="current-password"
+                />
+                <button class="password-visibility" type="button" id="toggle-password">
+                    <img
+                            src="/images/eyes-closed.svg"
+                            alt="closed-eye-icon"
+                            data-for="password"
+                            id="password-toggle-icon"
+                    />
+                </button>
+            </div>
+
+            <div class="notes">
+                <div>
+                    <label for="remember-me">Remember me</label>
+                    <input type="checkbox" name="remember-me" id="remember-me" />
+                </div>
+
+                <a href="/forgot-password" id="forgot-password-link">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submit-btn">
+                <span id="btn-text">Sign In</span>
+                <span id="loading-spinner" style="display: none;">Signing in...</span>
+            </button>
+        </form>
+    </div>
+</main>
+</body>
+</html>
